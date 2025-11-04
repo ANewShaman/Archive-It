@@ -45,36 +45,15 @@ export const Window: React.FC<WindowProps> = ({ title, children, onClose, window
   };
 
   const handleMouseMove = useCallback((e: MouseEvent) => {
-    
     if (isFrozen) return;
     const deltaX = e.clientX - dragStartPos.current.mouseX;
     const deltaY = e.clientY - dragStartPos.current.mouseY;
 
-    // Proposed new absolute position relative to the desktop
-    let newX = dragStartPos.current.windowX + deltaX;
-    let newY = dragStartPos.current.windowY + deltaY;
-
-    // Clamp within CRT glass container bounds if available
-    const crt = document.getElementById('crt-glass');
-    const elem = windowRef.current;
-    if (crt && elem) {
-      const crtRect = crt.getBoundingClientRect();
-      const elemRect = elem.getBoundingClientRect();
-
-      // Calculate maximum allowed positions (prevent overflow)
-      const maxX = Math.max(0, crtRect.width - elemRect.width);
-      const maxY = Math.max(0, crtRect.height - elemRect.height);
-
-      // Clamp new positions
-      newX = Math.max(0, Math.min(newX, maxX));
-      newY = Math.max(0, Math.min(newY, maxY));
-    }
-
     onMove({
-      x: newX,
-      y: newY,
+      x: dragStartPos.current.windowX + deltaX,
+      y: dragStartPos.current.windowY + deltaY,
     });
-}, [onMove, isFrozen]);
+  }, [onMove, isFrozen]);
 
   const handleMouseUp = useCallback(() => {
     setIsDragging(false);

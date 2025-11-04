@@ -11,6 +11,7 @@ import { AsciiTable } from './components/AsciiTable';
 import { Bug } from './components/Bug';
 import { Popup } from './components/Popup';
 import { Lore } from './components/Lore';
+import ArrivalNotice from "./components/ArrivalNotice";
 
 // DELAY
 const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
@@ -56,6 +57,7 @@ const App: React.FC = () => {
     const subtleFlickerTimerId = useRef<number | null>(null);
 
     const [gameState, setGameState] = useState<{
+        showArrivalNotice: boolean;
         glitchActive: boolean;
         currentPuzzle: PuzzleState;
         selectedMeme: string | null;
@@ -77,6 +79,7 @@ const App: React.FC = () => {
         victoryCatFrame: string | null;
         isSubtleFlickering: boolean;
     }>({
+        showArrivalNotice: true,
         glitchActive: true, // Glitches are now permanently on
         currentPuzzle: 0, // 0: NOBLE CHOICE
         selectedMeme: null,
@@ -863,7 +866,7 @@ const App: React.FC = () => {
         }
         await sleep(1000);
         if (!isMounted.current) return;
-        await typeMessage("\nERROR: C̷̢̧̨̢̛̣͈̖̮̲͇̘̞̹̫̝̹̳͚̼͈͙̦͙̖͍͕̗̬̬̥̱̞̞͉͚͍̜̅̉͒̽̈̔̍̂̃̈́̄͊̄̐̆̿͑̎̒̃̌͂̄́́͒͗̐̀̇̌͂͗͂́̑̉̽͘̕̕͘̚͠ͅA̸̧̡̛̳̹̯̘̬̳̯̯͙̗̥̎͊̉̍̽̒͐̉̋̓̈́͑͐̂̀̇̏̈́̀̀̈́̍̒̿̃͊̕̕͘͘͠͝͝T̷̛̛͕̆̔͂͊̃̌́̽̋͛̌̈́̽͋̓́͊̎͋̇̂̎͗͋͊̈̂̔͗̂̉̾͗̅̔̑̕̕͘̕̚͠͝͝A̷̺͍͎͈͙̰̰̹̺͇̖̳͚̖̅͋͂̌̒͒̈̿̈͗̑̌͋̈́̈́̌͊̂̊͊͂͂͋̔̈̈́͑̾̌͋̊̄̏̊̀͂̅͑͛̋̚̕͘͝͝͝S̷͍͙̋̇̔͛̋͗̍̒̾̀̒̊̾͛́̓͛̀͆̓̈̀̃̂̅̽͐̀͛̐͘͝͠͝T̵̡̢̢̧̛͇̣͉̤̰̫̰̖̙̗̬͔̮͙̮̰͖̮̲̟̝͍͉̱͈̪͉̲̲̬͓̙̗͙͉̞̀̾̑̏̈́̌̂͋̃̏̓̔̎͗͐̌͆̈́͛́̇̀̔̌̾̋̈̌͒̓̄̓̿̋͑̈́̎̐̚̕̚̚͝͝͠͝R̵̡̧̧̢̡̧̫̤̜̩͎̜͚̬̮̟̠͉̹̘̺̺͇̎̉͑̍͗̈́͒̄̈̓̈́͗̇̂̌͋̒̓̆̿̑̊̌̚͜͜͝͝͠Ó̵̢̩̗͚̲̲̮̤͕̼̘̖̠̱͖̥̺̱̯̤̹̫̝̼͕͖̳̩̼̪̺͍͉͙̝̰̮̼̗͖̤̦̦̒͑̍͂͂̇̈́̚ͅP̷̢̛̛̬̓̀̆͗̂͑͐̽͆̆̀́͊̇͛̔͂͋̉̇͑͆̍̑̀̇̈͆̈́͑͗͘̚͝͠͝͝͝͝͝M͉̗H̸̨̧̢͓͙͙̲̲̦̦̬͓̻͚̥͕͕̣͉̻̘̠̜͓̟̦̩́̓̌̎̒̌̀́̀̂̿͛́̃͗́̆̉̏̑̾̑̒̓͗̿͋̊̉͑̀͊̀̍́̑͐̃͘͘̕͘͠Ĭ̶̬̩͙̗̹̖͍̩̖̥̲͖͖̞̫̄̃̄̅͛̄͋͌͋͊͒̍͒̐̓̒̾̃̉͗͌͌̽̽́̚̕̚͝͠͝͠S̨̝̞̠̻͈C̸̛̤͇͊̐̊̄̀̒̒̇̾͗͊͌͛̔́̎͘̕̚ C̷̨̡̢̨̛͎͎̮̳͙͙̜̞̗͕͍̫͙̜̩̹͔̦̤͓̹̭͎̤̞̩̙̺͓͎̠̲̫͙͎͚͓͕̽̈̑̾͌̔̂́͆̆̄̎͛̆̓̔̔͋̓̅̈́̆̃̅͊̋̀̈̈́̔̀̔́̓̂̈́̏͒͊̆͂̉̉̈͌͒͒̏̽͊̾͂̒͗̐̀͂͆͐̈̓͂̎͌̒̃̇̇̇́̈́̿̓̆̔͌̑̉́̌͛̀̀͌͗̓̅̌͘͘͘͘̚͘͜͝͝͝͝͠͠ͅͅ");
+        await typeMessage("\nERROR: C̷̢̧̨̢̛̣͈̖̮̲͇̘̞̹̫̝̹̳͚̼͈͙̦͙̖͍͕̗̬̬̥̱̞̞͉͚͍̜̅̉͒̽̈̔̍̂̃̈́̄͊̄̐̆̿͑̎̒̃̌͂̄́́͒͗̐̀̇̌͂͗͂́̑̉̽͘̕̕͘̚͠ͅA̸̧̡̛̳̹̯̘̬̳̯̯͙̗̥̎͊̉̍̽̒͐̉̋̓̈́͑͐̂̀̇̏̈́̀̀̈́̍̒̿̃͊̕̕͘͘͠͝͝T̷̛̛͕̆̔͂͊̃̌́̽̋͛̌̈́̽͋̓́͊̎͋̇̂̎͗͋͊̈̂̔͗̂̉̾͗̅̔̑̕̕͘̕̚͠͝͝A̷̺͍͎͈͙̰̰̹̺͇̖̳͚̖̅͋͂̌̒͒̈̿̈͗̑̌͋̈́̈́̌͊̂̊͊͂͂͋̔̈̈́͑̾̌͋̊̄̏̊̀͂̅͑͛̋̚̕͘͝͝͝S̷͍͙̋̇̔͛̋͗̍̒̾̀̒̊̾͛́̓͛̀͆̓̈̀̃̂̅̽͐̀͛̐͘͝͠͝T̵̡̢̢̧̛͇̣͉̤̰̫̰̖̙̗̬͔̮͙̮̰͖̮̲̟̝͍͉̱͈̪͉̲̲̬͓̙̗͙͉̞̀̾̑̏̈́̌̂͋̃̏̓̔̎͗͐̌͆̈́͛́̇̀̔̌̾̋̈̌͒̓̄̓̿̋͑̈́̎̐̚̕̚̚͝͝͠͝R̵̡̧̧̢̡̧̫̤̜̩͎̜͚̬̮̟̠͉̹̘̺̺͇̎̉͑̍͗̈́͒̄̈̓̈́͗̇̂̌͋̒̓̆̿̑̊̌̚͜͜͝͝͠Ó̵̢̩̗͚̲̲̮̤͕̼̘̖̠̱͖̥̺̱̯̤̹̫̝̼͕͖̳̩̼̪̺͍͉͙̝̰̮̼̗͖̤̦̦̒͑̍͂͂̇̈́̚ͅP̷̢̛̛̬̓̀̆͗̂͑͐̽͆̆̀́͊̇͛̔͂͋̉̇͑͆̍̑̀̇̈͆̈́͑͗͘̚͝͠͝͝͝͝͝M͉̗H̸̨̧̢͓͙͙̲̲̦̦̬͓̻͚̥͕͕̣͉̻̘̠̜͓̟̦̩́̓̌̎̒̌̀́̀̂̿͛́̃͗́̆̉̏̑̾̑̒̓͗̿͋̊̉͑̀͊̀̍́̑͐̃͘͘̕͘͠Ĭ̶̬̩͙̗̹̖͍̩̖̥̲͖͖̞̫̄̃̄̅͛̄͋͌͋͊͒̍͒̐̓̒̾̃̉͗͌͌̽̽́̚̕̚͝͠͝͠S̨̝̞̠̻͈C̸̛̤͇͊̐̊̄̀̒̒̇̾͗͊͌͛̔́̎͘̕̚ C̷̨̡̢̨̛͎͎̮̳͙͙̜̗͕͍̫͙̜̩̹͔̦̤͓̹̭͎̤̞̩̙̺͓̠̲̫͙͎͚͓͕̽̈̑̾͌̔̂́͆̆̄̎͛̆̓̔̔͋̓̅̈́̆̃̅͊̋̀̈̈́̔̀̔́̓̂̈́̏͒͊̆͂̉̉̈͌͒͒̏̽͊̾͂̒͗̐̀͂͆͐̈̓͂̎͌̒̃̇̇̇́̈́̿̓̆̔͌̑̉́̌͛̀̀͌͗̓̅̌͘͘͘͘̚͘͜͝͝͝͝͠͠ͅͅ");
         await typeMessage("M̷E̷M̷O̴R̶Y̵ ̴S̷E̸G̴M̸E̴N̴T̴ ̷[̴0̴x̵F̵F̴A̴A̴]̴ ̴U̴N̵R̶E̵A̵D̶A̵B̴L̴E̸.̴");
         await typeMessage("CORRUPTION DETECTED IN C̸͎͇̓̈́Ỏ̸̬̋R̶̫̦̒Ē̷̼ ARCHIVE ̴I̶N̸ ̶C̵O̷R̴E̵ ̸A̶R̴C̷H̴I̸V̶E̵.̵.̵ S̶P̸I̷R̷A̸L̷I̵N̴G̴.̵.̷.̵");
         await typeMessage("!̶@̵#̶%̸^̴&̷*̵(̴)̷_̶+̶");
@@ -1084,9 +1087,12 @@ const App: React.FC = () => {
                 setGameState(prev => ({...prev, currentPuzzle: 0, isInputLocked: false}));
             }
         };
-        cheekyIntro();
+        
+        if (!gameState.showArrivalNotice) {
+            cheekyIntro();
+        }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [gameState.showArrivalNotice]);
 
     useEffect(() => {
         const body = document.body;
@@ -1118,71 +1124,80 @@ const App: React.FC = () => {
             
             <div id="monitor-bezel">
               <div id="crt-glass" ref={crtGlassRef} className={crtClassName}>
-                <div id="desktop" className={`flex flex-col space-y-4 ${gameState.finaleActive ? 'frozen' : ''}`}>
-                    <DesktopIcon name="archive_terminal.exe" onDoubleClick={() => toggleWindow('terminal')} />
-                    <DesktopIcon name="manual_v1.txt" onDoubleClick={() => toggleWindow('manual')} disabled={isManualLocked} />
-                    <DesktopIcon name="ascii_table.txt" onDoubleClick={() => toggleWindow('ascii')} />
-                    <DesktopIcon name="system_status.log" onDoubleClick={() => toggleWindow('log')} />
-                    <DesktopIcon name="CLASSIFIED.txt" onDoubleClick={() => toggleWindow('lore')} />
-                    <DesktopIcon name="system_log_corrupt.txt" onDoubleClick={() => {}} disabled={true} />
-                    <DesktopIcon name="backup_failed_report.log" onDoubleClick={() => {}} disabled={true} />
-                    <DesktopIcon name="unknown_artifact.zip" onDoubleClick={() => {}} disabled={true} />
-                    <DesktopIcon name="last_transmission_fragment.dat" onDoubleClick={() => {}} disabled={true} />
-                    <div className="text-lime-700 text-xs absolute bottom-4 right-4">SYSTEM OK</div>
-                </div>
-
-                {gameState.finaleActive && (
+                {gameState.showArrivalNotice ? (
+                    <ArrivalNotice onComplete={() => setGameState(prev => ({ ...prev, showArrivalNotice: false }))} />
+                ) : (
                     <>
-                        <div
-                            style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 9999, cursor: 'crosshair' }}
-                            onClick={handleFinaleMiss}
-                        />
-                        {gameState.bugs.map(bug => (
-                            <Bug key={bug.id} x={bug.x} y={bug.y} onClick={winFinale} />
-                        ))}
+                        <div id="desktop" className={`flex flex-col space-y-4 ${gameState.finaleActive ? 'frozen' : ''}`}>
+                            <DesktopIcon name="archive_terminal.exe" onDoubleClick={() => toggleWindow('terminal')} />
+                            <DesktopIcon name="manual_v1.txt" onDoubleClick={() => toggleWindow('manual')} disabled={isManualLocked} />
+                            <DesktopIcon name="ascii_table.txt" onDoubleClick={() => toggleWindow('ascii')} />
+                            <DesktopIcon name="system_status.log" onDoubleClick={() => toggleWindow('log')} />
+                            <DesktopIcon name="CLASSIFIED.txt" onDoubleClick={() => toggleWindow('lore')} />
+                            <DesktopIcon name="system_log_corrupt.txt" onDoubleClick={() => {}} disabled={true} />
+                            <DesktopIcon name="backup_failed_report.log" onDoubleClick={() => {}} disabled={true} />
+                            <DesktopIcon name="unknown_artifact.zip" onDoubleClick={() => {}} disabled={true} />
+                            <DesktopIcon name="last_transmission_fragment.dat" onDoubleClick={() => {}} disabled={true} />
+                            <div className="text-lime-700 text-xs absolute bottom-4 right-4">SYSTEM OK</div>
+                        </div>
+
+                        {gameState.finaleActive && (
+                            <>
+                                <div
+                                    style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 9999, cursor: 'crosshair' }}
+                                    onClick={handleFinaleMiss}
+                                />
+                                {gameState.bugs.map(bug => (
+                                    <Bug key={bug.id} x={bug.x} y={bug.y} onClick={winFinale} />
+                                ))}
+                            </>
+                        )}
                     </>
                 )}
               </div>
             </div>
 
-            {gameState.isPopupHellActive && gameState.popups.map(popup => (
-                <Popup 
-                    key={popup.id}
-                    id={popup.id}
-                    position={popup.position}
-                    buttonPosition={popup.buttonPosition}
-                    onClose={handleClosePopup}
-                    onButtonMouseMove={handlePopupButtonMouseMove}
-                    isClosing={popup.isClosing}
-                />
-            ))}
+            {/* Popups and Windows need to render outside the conditional to not be unmounted */}
+            {!gameState.showArrivalNotice && (
+                <>
+                    {gameState.isPopupHellActive && gameState.popups.map(popup => (
+                        <Popup 
+                            key={popup.id}
+                            id={popup.id}
+                            position={popup.position}
+                            buttonPosition={popup.buttonPosition}
+                            onClose={handleClosePopup}
+                            onButtonMouseMove={handlePopupButtonMouseMove}
+                            isClosing={popup.isClosing}
+                        />
+                    ))}
 
-            {windows.terminal.isOpen && (
-                <Window title="archive_terminal.exe" onClose={() => closeWindow('terminal')} windowState={windows.terminal} onFocus={() => bringToFront('terminal')} onMove={(newPos) => handleWindowMove('terminal', newPos)} isFrozen={gameState.finaleActive}>
-                    <Terminal 
-                        log={terminalLog} 
-                        onCommand={handleCommand} 
-                        isLocked={gameState.isInputLocked} 
-                        currentPuzzle={gameState.currentPuzzle}
-                        onSystemMessage={(msg) => addToLog({ text: msg, type: 'system' })}
-                        isLeetspeakActive={gameState.isLeetspeakActive}
-                        victoryCatFrame={gameState.victoryCatFrame}
-                    />
-                </Window>
-            )}
-            {windows.manual.isOpen && (
-                <Window title="manual_v1.txt" onClose={() => closeWindow('manual')} windowState={windows.manual} onFocus={() => bringToFront('manual')} onMove={(newPos) => handleWindowMove('manual', newPos)} isFrozen={gameState.finaleActive}>
-                    <Manual />
-                </Window>
-            )}
-            {windows.ascii.isOpen && (
-                <Window title="ascii_table.txt" onClose={() => closeWindow('ascii')} windowState={windows.ascii} onFocus={() => bringToFront('ascii')} onMove={(newPos) => handleWindowMove('ascii', newPos)} isFrozen={gameState.finaleActive}>
-                    <AsciiTable />
-                </Window>
-            )}
-            {windows.log.isOpen && (
-                <Window title="system_status.log" onClose={() => closeWindow('log')} windowState={windows.log} onFocus={() => bringToFront('log')} onMove={(newPos) => handleWindowMove('log', newPos)} isFrozen={gameState.finaleActive}>
-                    <div className="text-gray-400 text-sm whitespace-pre-wrap h-full overflow-y-auto">
+                    {windows.terminal.isOpen && (
+                        <Window title="archive_terminal.exe" onClose={() => closeWindow('terminal')} windowState={windows.terminal} onFocus={() => bringToFront('terminal')} onMove={(newPos) => handleWindowMove('terminal', newPos)} isFrozen={gameState.finaleActive}>
+                            <Terminal 
+                                log={terminalLog} 
+                                onCommand={handleCommand} 
+                                isLocked={gameState.isInputLocked} 
+                                currentPuzzle={gameState.currentPuzzle}
+                                onSystemMessage={(msg) => addToLog({ text: msg, type: 'system' })}
+                                isLeetspeakActive={gameState.isLeetspeakActive}
+                                victoryCatFrame={gameState.victoryCatFrame}
+                            />
+                        </Window>
+                    )}
+                    {windows.manual.isOpen && (
+                        <Window title="manual_v1.txt" onClose={() => closeWindow('manual')} windowState={windows.manual} onFocus={() => bringToFront('manual')} onMove={(newPos) => handleWindowMove('manual', newPos)} isFrozen={gameState.finaleActive}>
+                            <Manual />
+                        </Window>
+                    )}
+                    {windows.ascii.isOpen && (
+                        <Window title="ascii_table.txt" onClose={() => closeWindow('ascii')} windowState={windows.ascii} onFocus={() => bringToFront('ascii')} onMove={(newPos) => handleWindowMove('ascii', newPos)} isFrozen={gameState.finaleActive}>
+                            <AsciiTable />
+                        </Window>
+                    )}
+                    {windows.log.isOpen && (
+                        <Window title="system_status.log" onClose={() => closeWindow('log')} windowState={windows.log} onFocus={() => bringToFront('log')} onMove={(newPos) => handleWindowMove('log', newPos)} isFrozen={gameState.finaleActive}>
+                            <div className="text-gray-400 text-sm whitespace-pre-wrap h-full overflow-y-auto">
 {`SYSBOOT OK
 KERNEL v6.66 LOADED
 NETWORK OFFLINE
@@ -1191,13 +1206,15 @@ POWER MODULE: STABLE
 LAST KERNEL PANIC CODE: 42
 USER SESSION: ADMIN (ACTIVE)
 `}
-                    </div>
-                </Window>
-            )}
-             {windows.lore.isOpen && (
-                <Window title="CLASSIFIED.txt (Fragment)" onClose={() => closeWindow('lore')} windowState={windows.lore} onFocus={() => bringToFront('lore')} onMove={(newPos) => handleWindowMove('lore', newPos)} isFrozen={gameState.finaleActive}>
-                    <Lore />
-                </Window>
+                            </div>
+                        </Window>
+                    )}
+                     {windows.lore.isOpen && (
+                        <Window title="CLASSIFIED.txt (Fragment)" onClose={() => closeWindow('lore')} windowState={windows.lore} onFocus={() => bringToFront('lore')} onMove={(newPos) => handleWindowMove('lore', newPos)} isFrozen={gameState.finaleActive}>
+                            <Lore />
+                        </Window>
+                    )}
+                </>
             )}
         </div>
     );

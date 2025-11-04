@@ -10,8 +10,13 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
     <style>
+      :root {
+        --cursor-default: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><polygon points="4,4 10,28 28,10" fill="%2300ff00" stroke="%23000000" stroke-width="2" stroke-linejoin="round" /></svg>') 4 4, auto;
+        --cursor-pointer: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><polygon points="4,4 10,28 28,10" fill="%23000000" stroke="%2300ff00" stroke-width="2" stroke-linejoin="round" /></svg>') 4 4, pointer;
+      }
       body {
         font-family: 'VT323', monospace;
+        cursor: var(--cursor-default);
       }
       @keyframes shake {
         0%, 100% { transform: translateX(0); }
@@ -23,7 +28,7 @@
       }
 
       /* --- VISUAL GLITCH LAYER --- */
-      /*Scanline Overlay */
+      /* 1. The "Broken Screen" Scanline Overlay */
       #scanline-overlay {
         position: fixed;
         top: 0;
@@ -39,7 +44,7 @@
           transparent 4px
         );
         z-index: 1000; /* Must be on top of everything */
-        pointer-events: none; /* Lets the mouse click through it! */
+        pointer-events: none; 
         /* Off by default */
         display: none;
       }
@@ -276,7 +281,7 @@
       .bug {
         position: absolute;
         font-size: 24px;
-        cursor: pointer;
+        cursor: var(--cursor-pointer);
         user-select: none;
         z-index: 10000;
         pointer-events: auto; /* Make it clickable over the frozen desktop */
@@ -324,7 +329,7 @@
         color: #fdd;
         border-radius: 5px;
         padding: 2px 10px;
-        cursor: pointer;
+        cursor: var(--cursor-pointer);
         font-family: 'VT323', monospace;
         transition: background-color 0.2s;
       }
@@ -333,6 +338,9 @@
       }
       .popup-close-button:active {
         background-color: #770000;
+      }
+      .desktop-icon-interactive {
+        cursor: var(--cursor-pointer);
       }
       .popup-error-icon {
         display: inline-block;
@@ -430,7 +438,7 @@
         content: '';
         position: absolute;
         top: 0; left: 0; right: 0; bottom: 0;
-        background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAp4XiDAAAAUVBMVEWFhYWDg4N3d3dtbW17e3t1dXVuZmaPe2iOjeD///8/Pz9aWlpsbGxMSkpDQ0NBPjxtaGxAHjEdTEMUHx8gJyczMTSDg4N3d3dtbW17e3t1dXVuZmaPe2iOjeD///8/Pz9aWlpsbGxMSkpDQ0NBPjxtaGxAHjEdTEMUHx8gJyczMTSDg4N3d3dtbW17e3t1dXVuZmaPe2iOjeD///8/Pz9aWlpsbGxMSkpDQ0NBPjxtaGxAHjEdTEMUHx8gJyczMTSDg4N3d3dtbW17e3t1dXVuZmaPe2iOjeD///8/Pz9aWlpsbGxMSkpDQ0NBPjxtaGxAHjEdTEMUHx8gJyczMTSDg4N3d3dtbW17e3t1dXVuZmaPe2iOjeD///8/Pz9aWlpsbGxMSkpDQ0NBPjxtaGxAHjEdTEMUHx8gJyczMTSDg4N3d3dtbW17e3t1dXVuZmaPe2iOjeD///8/Pz9aWlpsbGxMSkpDQ0NBPjxtaGxAHjEdTEMUHx8gJyczMTSDg4N3d3dtbW1t7e3t1dXV3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3-VBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAANElEQVR42mP4z8BQ/A/F0AANAwBDAwBDAwBDAwBDAwBDAwBDAwBDAwBDAwBDAwBDgLU3AABRAZvEcml2rAAAAABJRU5ErkJggg==');
+        background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAp4XiDAAAAUVBMVEWFhYWDg4N3d3dtbW17e3t1dXVuZmaPe2iOjeD///8/Pz9aWlpsbGxMSkpDQ0NBPjxtaGxAHjEdTEMUHx8gJyczMTSDg4N3d3dtbW17e3t1dXVuZmaPe2iOjeD///8/Pz9aWlpsbGxMSkpDQ0NBPjxtaGxAHjEdTEMUHx8gJyczMTSDg4N3d3dtbW17e3t1dXVuZmaPe2iOjeD///8/Pz9aWlpsbGxMSkpDQ0NBPjxtaGxAHjEdTEMUHx8gJyczMTSDg4N3d3dtbW17e3t1dXVuZmaPe2iOjeD///8/Pz9aWlpsbGxMSkpDQ0NBPjxtaGxAHjEdTEMUHx8gJyczMTSDg4N3d3dtbW17e3t1dXVuZmaPe2iOjeD///8/Pz9aWlpsbGxMSkpDQ0NBPjxtaGxAHjEdTEMUHx8gJyczMTSDg4N3d3dtbW17e3t1dXVuZmaPe2iOjeD///8/Pz9aWlpsbGxMSkpDQ0NBPjxtaGxAHjEdTEMUHx8gJyczMTSDg4N3d3dtbW1t7e3t1dXV3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3-VBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAANElEQVR42mP4z8BQ/A/F0AANAwBDAwBDAwBDAwBDAwBDAwBDAwBDAwBDAwBDAwBDgLU3AABRAZvEcml2rAAAAABJRU5ErkJggg==');
         opacity: 0.15;
         z-index: 1502; /* Ensure this is on top of other permanent effects */
         pointer-events: none;
@@ -522,7 +530,7 @@
         background-color: #990000; /* Dark Red redaction */
         color: #990000;
         user-select: none;
-        padding: 0 2px;
+        padding: 0 2px; /* Slight padding */
       }
       .lore-content .glitchy { /* For glitchy text */
           display: inline-block;
@@ -534,6 +542,149 @@
           100% { transform: skewX(5deg) translateX(2px); opacity: 1;}
       }
 
+      /* --- GTA-STYLE ARRIVAL NOTICE --- */
+      #arrival-notice {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background-color: #000;
+        color: #00FF00;
+        z-index: 10000;
+        opacity: 0;
+        transition: opacity 0.2s linear;
+      }
+      #arrival-notice.visible {
+        opacity: 1;
+      }
+      #arrival-notice.exiting {
+        animation: gta-exit-glitch 0.5s ease-out forwards;
+      }
+      .gta-location {
+        position: absolute;
+        top: 2rem;
+        left: 2rem;
+        font-size: 1.5rem;
+        color: #00FF00;
+        opacity: 0;
+        animation: gta-text-glitch-in 0.8s 0.5s forwards;
+      }
+      .gta-title-container {
+        text-align: center;
+        transform: scale(1.5);
+        opacity: 0;
+        animation: gta-title-slam 1s 0.2s forwards cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+      .gta-main-title {
+        position: relative; /* For pseudo-element glitch */
+        font-size: 10rem;
+        font-weight: bold;
+        color: #fff;
+        text-shadow:
+          0 0 5px #0f0, 0 0 10px #0f0, 0 0 20px #0f0,
+          0 0 40px #0f0, 0 0 80px #0f0, 3px 3px 2px rgba(0,0,0,0.5);
+        letter-spacing: 0.1em;
+        animation: gta-title-glitch-main 1.5s infinite steps(4);
+      }
+      .gta-main-title::before,
+      .gta-main-title::after {
+        content: 'THE LAST ARCHIVE';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: #000;
+        overflow: hidden;
+      }
+      .gta-main-title::before {
+        left: 2px;
+        text-shadow: -2px 0 #ff00ff; /* Magenta */
+        animation: gta-glitch-anim-1 2s infinite linear alternate-reverse;
+      }
+      .gta-main-title::after {
+        left: -2px;
+        text-shadow: -2px 0 #00ffff, 2px 2px #ff00ff; /* Cyan and Magenta */
+        animation: gta-glitch-anim-2 1s infinite linear alternate-reverse;
+      }
+      .gta-subtitle {
+        font-size: 2.5rem;
+        color: #00FF00;
+        margin-top: -1rem;
+        text-shadow: 0 0 5px #0f0, 2px 2px 2px rgba(0,0,0,0.5);
+        opacity: 0;
+        animation: gta-text-glitch-in 0.8s 0.8s forwards;
+      }
+      .gta-prompt {
+        position: absolute;
+        bottom: 3rem;
+        font-size: 1.8rem;
+        color: #fff;
+        text-shadow: 0 0 5px #0f0;
+        opacity: 0;
+        animation: gta-prompt-blink 2s infinite, gta-text-glitch-in 0.8s 1.2s forwards;
+      }
+      @keyframes gta-title-slam {
+        0% { transform: scale(1.5) skew(-15deg); opacity: 0; filter: blur(10px); }
+        50% { transform: scale(0.9) skew(5deg); opacity: 1; filter: blur(0px); }
+        100% { transform: scale(1) skew(0deg); opacity: 1; filter: blur(0px); }
+      }
+      @keyframes gta-text-glitch-in {
+        0% { opacity: 0; transform: translateY(20px); text-shadow: 0 0 20px red; }
+        20% { opacity: 1; transform: translateY(0px) skewX(10deg); text-shadow: 0 0 5px blue; }
+        40% { transform: skewX(-10deg); }
+        60% { transform: skewX(5deg); }
+        80% { transform: skewX(-2deg); }
+        100% { opacity: 1; transform: translateY(0) skewX(0); }
+      }
+      @keyframes gta-prompt-blink {
+        0%, 45%, 100% { opacity: 1; }
+        50%, 95% { opacity: 0.5; }
+      }
+      @keyframes gta-exit-glitch {
+        0% { opacity: 1; filter: brightness(1) invert(0); }
+        25% { transform: scale(1.02); filter: brightness(3) invert(0.5); }
+        50% { opacity: 0.5; transform: scale(0.98); filter: brightness(1) invert(0); }
+        75% { transform: scale(1.01); filter: brightness(5) invert(1); }
+        100% { opacity: 0; transform: scale(1.5); filter: brightness(10) invert(1); }
+      }
+
+      /* Keyframes for the new title glitch */
+      @keyframes gta-title-glitch-main {
+        0% { transform: skewX(0deg); }
+        25% { transform: skewX(1deg); }
+        50% { transform: skewX(0deg); }
+        75% { transform: skewX(-1deg); }
+        100% { transform: skewX(0deg); }
+      }
+      @keyframes gta-glitch-anim-1 {
+        0% { clip-path: polygon(0 2%, 100% 2%, 100% 5%, 0 5%); }
+        10% { clip-path: polygon(0 15%, 100% 15%, 100% 15%, 0 15%); }
+        20% { clip-path: polygon(0 10%, 100% 10%, 100% 20%, 0 20%); }
+        30% { clip-path: polygon(0 1%, 100% 1%, 100% 2%, 0 2%); }
+        40% { clip-path: polygon(0 33%, 100% 33%, 100% 33%, 0 33%); }
+        50% { clip-path: polygon(0 44%, 100% 44%, 100% 44%, 0 44%); }
+        60% { clip-path: polygon(0 50%, 100% 50%, 100% 20%, 0 20%); }
+        70% { clip-path: polygon(0 70%, 100% 70%, 100% 70%, 0 70%); }
+        80% { clip-path: polygon(0 80%, 100% 80%, 100% 80%, 0 80%); }
+        90% { clip-path: polygon(0 50%, 100% 50%, 100% 55%, 0 55%); }
+        100% { clip-path: polygon(0 60%, 100% 60%, 100% 70%, 0 70%); }
+      }
+      @keyframes gta-glitch-anim-2 {
+        0% { clip-path: polygon(0 62%, 100% 62%, 100% 80%, 0 80%); }
+        15% { clip-path: polygon(0 5%, 100% 5%, 100% 5%, 0 5%); }
+        25% { clip-path: polygon(0 80%, 100% 80%, 100% 80%, 0 80%); }
+        35% { clip-path: polygon(0 80%, 100% 80%, 100% 80%, 0 80%); }
+        45% { clip-path: polygon(0 50%, 100% 50%, 100% 50%, 0 50%); }
+        55% { clip-path: polygon(0 70%, 100% 70%, 100% 90%, 0 90%); }
+        65% { clip-path: polygon(0 30%, 100% 30%, 100% 50%, 0 50%); }
+        75% { clip-path: polygon(0 15%, 100% 15%, 100% 35%, 0 35%); }
+        85% { clip-path: polygon(0 40%, 100% 40%, 100% 60%, 0 60%); }
+        95% { clip-path: polygon(0 22%, 100% 22%, 100% 42%, 0 42%); }
+        100% { clip-path: polygon(0 90%, 100% 90%, 100% 95%, 0 95%); }
+      }
     </style>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script type="importmap">
@@ -545,7 +696,6 @@
   }
 }
 </script>
-<link rel="stylesheet" href="/index.css">
 </head>
   <body>
     <div id="root"></div>
@@ -570,6 +720,5 @@
     </div>
     
     <script type="text/babel" data-type="module" src="/index.tsx"></script>
-  <script type="module" src="/index.tsx"></script>
-</body>
+  </body>
 </html>
