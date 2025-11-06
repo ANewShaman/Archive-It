@@ -48,6 +48,12 @@ export const INITIAL_WINDOWS_STATE: Record<WindowId, WindowState> = {
         position: { x: 200, y: 120 },
         size: { width: 600, height: 400 },
         zIndex: 5,
+    },
+    notes: {
+        isOpen: false,
+        position: { x: 200, y: 200 },
+        size: { width: 400, height: 300 },
+        zIndex: 5,
     }
 };
 

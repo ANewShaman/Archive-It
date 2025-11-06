@@ -1,4 +1,4 @@
-export type WindowId = 'terminal' | 'manual' | 'ascii' | 'log' | 'lore' | 'netfeed';
+export type WindowId = 'terminal' | 'manual' | 'ascii' | 'log' | 'lore' | 'netfeed' | 'notes';
 
 export interface Position {
   x: number;
