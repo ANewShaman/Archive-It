@@ -1,8 +1,9 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 
 const GRID_SIZE = 4;
 const TARGET_ROW = ['1', '3', '3', '7'];
-const TIME_LIMIT = 45; // Increased from 30
+const TIME_LIMIT = 15;
 
 // Helper to create a shuffled grid that is solvable
 const createShuffledGrid = (): string[][] => {

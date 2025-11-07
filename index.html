@@ -252,21 +252,21 @@
       }
 
       /* --- CUSTOM SCROLLBAR --- */
-      #terminal-log::-webkit-scrollbar {
+      #terminal-log::-webkit-scrollbar, .email-list::-webkit-scrollbar, .email-content::-webkit-scrollbar {
         width: 8px;
       }
 
-      #terminal-log::-webkit-scrollbar-track {
+      #terminal-log::-webkit-scrollbar-track, .email-list::-webkit-scrollbar-track, .email-content::-webkit-scrollbar-track {
         background: #111;
       }
 
-      #terminal-log::-webkit-scrollbar-thumb {
+      #terminal-log::-webkit-scrollbar-thumb, .email-list::-webkit-scrollbar-thumb, .email-content::-webkit-scrollbar-thumb {
         background-color: #005000; /* Dark green */
         border-radius: 4px;
         border: 1px solid #00FF00; /* Bright green border */
       }
 
-      #terminal-log::-webkit-scrollbar-thumb:hover {
+      #terminal-log::-webkit-scrollbar-thumb:hover, .email-list::-webkit-scrollbar-thumb:hover, .email-content::-webkit-scrollbar-thumb:hover {
         background-color: #008000;
       }
 
@@ -438,7 +438,7 @@
         content: '';
         position: absolute;
         top: 0; left: 0; right: 0; bottom: 0;
-        background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAp4XiDAAAAUVBMVEWFhYWDg4N3d3dtbW17e3t1dXVuZmaPe2iOjeD///8/Pz9aWlpsbGxMSkpDQ0NBPjxtaGxAHjEdTEMUHx8gJyczMTSDg4N3d3dtbW17e3t1dXVuZmaPe2iOjeD///8/Pz9aWlpsbGxMSkpDQ0NBPjxtaGxAHjEdTEMUHx8gJyczMTSDg4N3d3dtbW17e3t1dXVuZmaPe2iOjeD///8/Pz9aWlpsbGxMSkpDQ0NBPjxtaGxAHjEdTEMUHx8gJyczMTSDg4N3d3dtbW1t7e3t1dXV3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3-VBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAANElEQVR42mP4z8BQ/A/F0AANAwBDAwBDAwBDAwBDAwBDAwBDAwBDAwBDAwBDAwBDgLU3AABRAZvEcml2rAAAAABJRU5ErkJggg==');
+        background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAp4XiDAAAAUVBMVEWFhYWDg4N3d3dtbW17e3t1dXVuZmaPe2iOjeD///8/Pz9aWlpsbGxMSkpDQ0NBPjxtaGxAHjEdTEMUHx8gJyczMTSDg4N3d3dtbW17e3t1dXVuZmaPe2iOjeD///8/Pz9aWlpsbGxMSkpDQ0NBPjxtaGxAHjEdTEMUHx8gJyczMTSDg4N3d3dtbW17e3t1dXVuZmaPe2iOjeD///8/Pz9aWlpsbGxMSkpDQ0NBPjxtaGxAHjEdTEMUHx8gJyczMTSDg4N3d3dtbW1t7e3t1dXV3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d-VBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAANElEQVR42mP4z8BQ/A/F0AANAwBDAwBDAwBDAwBDAwBDAwBDAwBDAwBDAwBDAwBDgLU3AABRAZvEcml2rAAAAABJRU5ErkJggg==');
         opacity: 0.15;
         z-index: 1502; /* Ensure this is on top of other permanent effects */
         pointer-events: none;
@@ -774,6 +774,13 @@
       .crt-flash {
         position: fixed;
         inset: 0;
+        background: rgba(255, 255, 255, 0.8);
+        animation: flashout 0.3s forwards;
+        z-index: 999999;
+      }
+      .crt-flash-red {
+        position: fixed;
+        inset: 0;
         background: rgba(255, 0, 0, 0.6);
         animation: flashout 0.3s forwards;
         z-index: 999999;
@@ -905,6 +912,326 @@
       }
       .xo-cheating-glitch {
         animation: flicker 0.1s 3;
+      }
+
+      /* --- SNAKE GAME --- */
+      .snake-game-container {
+        width: 100%;
+        height: 100%;
+        background-color: #0a0a0a;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+        font-family: 'VT323', monospace;
+        color: #00ffcc;
+        user-select: none;
+      }
+      .snake-game-container::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.7) 100%);
+        pointer-events: none;
+        z-index: 2;
+      }
+      .snake-game-container::after { /* Scanlines */
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: repeating-linear-gradient(
+          transparent 0px,
+          transparent 2px,
+          rgba(0, 255, 204, 0.05) 3px
+        );
+        pointer-events: none;
+        z-index: 3;
+        animation: subtle-vhs-scroll 0.5s linear infinite;
+      }
+
+      .snake-dashboard {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        font-size: 1rem;
+        line-height: 1.2;
+        text-shadow: 0 0 5px #00ffcc;
+        z-index: 10;
+      }
+
+      .snake-grid {
+        display: grid;
+        border: 2px solid #00ffcc;
+        box-shadow: 0 0 10px #00ffcc, inset 0 0 10px #00ffcc;
+      }
+
+      .snake-cell {
+        width: 16px; /* Adjust size as needed */
+        height: 16px;
+        background-color: transparent;
+        transition: background-color 0.1s;
+      }
+
+      .snake-body {
+        background-color: #00ffcc;
+        box-shadow: 0 0 8px #00ffcc, 0 0 4px #9c27b0 inset;
+        position: relative;
+      }
+
+      .snake-fragment {
+        background-color: #ff00ff; /* Pink/Magenta */
+        box-shadow: 0 0 8px #ff00ff;
+        animation: fragment-flicker 0.5s infinite;
+        text-align: center;
+        color: #ffff00;
+        font-size: 16px;
+        line-height: 16px;
+        font-weight: bold;
+      }
+
+      @keyframes fragment-flicker {
+        0% {
+          background-color: #ff00ff;
+          box-shadow: 0 0 8px #ff00ff, 0 0 4px #ff00ff inset;
+          transform: scale(1);
+        }
+        50% {
+          background-color: #ff3300;
+          box-shadow: 0 0 16px #ff3300, 0 0 8px #ff3300 inset;
+          transform: scale(1.1);
+        }
+        100% {
+          background-color: #ff00ff;
+          box-shadow: 0 0 8px #ff00ff, 0 0 4px #ff00ff inset;
+          transform: scale(1);
+        }
+      }
+
+      .snake-key {
+        background-color: #ffd700;
+        box-shadow: 0 0 8px #ffd700;
+        animation: key-rotate 2s linear infinite;
+      }
+
+      @keyframes key-rotate {
+        0% { filter: hue-rotate(0deg); }
+        100% { filter: hue-rotate(360deg); }
+      }
+
+      .snake-glitch-block {
+        background-color: #dc2626;
+        box-shadow: 0 0 8px #dc2626;
+        animation: glitch-block-anim 0.5s infinite;
+      }
+
+      @keyframes glitch-block-anim {
+        0% { opacity: 0.8; }
+        25% { transform: translateX(2px); }
+        50% { opacity: 1; }
+        75% { transform: translateX(-2px); }
+        100% { opacity: 0.8; }
+      }
+
+      .snake-game-over-overlay {
+        position: absolute;
+        inset: 0;
+        background-color: rgba(0,0,0,0.9);
+        z-index: 20;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: #dc2626;
+        text-shadow: 0 0 8px #dc2626;
+        animation: gameover-fadein 0.5s ease-in;
+      }
+
+      @keyframes gameover-fadein {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+
+      .snake-game-over-overlay h2 {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+      }
+
+      .snake-game-container.flash-red {
+          animation: flash-red-anim 0.3s 1;
+      }
+
+      @keyframes flash-red-anim {
+          0%, 100% { background-color: #0a0a0a; }
+          50% { background-color: #990000; }
+      }
+
+      /* --- EMAIL INBOX --- */
+      .email-inbox-container { /* Base container for auth and main view */
+        display: flex;
+        flex-direction: column; /* Auth prompt needs this */
+        height: 100%;
+        background: #020202;
+        color: #C8FF00;
+        font-family: 'VT323', monospace;
+        user-select: none;
+      }
+
+      /* Auth prompt styles can stay mostly the same */
+      .email-auth-prompt {
+        align-items: center;
+        justify-content: center;
+        flex-grow: 1;
+        padding: 20px;
+        text-align: center;
+      }
+      .email-auth-prompt p { margin-bottom: 20px; }
+      .email-auth-input-container { display: flex; align-items: center; }
+      @keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: #C8FF00; } }
+      .email-auth-input {
+        background: transparent;
+        border: none;
+        border-bottom: 1px solid #C8FF00;
+        color: #C8FF00;
+        font-size: 1.2rem;
+        outline: none;
+        width: 250px;
+        animation: blink-caret .75s step-end infinite;
+      }
+      .email-auth-button {
+        background-color: #1a1a1a;
+        border: 1px solid #C8FF00;
+        color: #C8FF00;
+        padding: 5px 10px;
+        margin-left: 10px;
+        cursor: var(--cursor-pointer);
+      }
+      .email-auth-button:hover { background-color: #C8FF00; color: #1a1a1a; }
+      .email-auth-error {
+        color: #ff0000;
+        text-shadow: 0 0 5px #ff0000;
+        margin-top: 15px;
+        animation: shake 0.5s;
+      }
+
+      /* This is the main view after auth */
+      .email-inbox {
+        flex-direction: row; /* This is the core fix for the split-pane layout */
+        width: 100%;
+        overflow: hidden;
+        border-top: 2px solid #005000;
+      }
+
+      .email-list {
+        width: 35%;
+        border-right: 2px solid #005000;
+        overflow-y: auto;
+      }
+
+      .email-list-header {
+        padding: 8px;
+        font-size: 1.1rem;
+        border-bottom: 2px solid #005000;
+        background-color: #003000;
+        color: #aaffaa;
+        flex-shrink: 0;
+      }
+
+      .email-list-item {
+        display: flex;
+        align-items: center;
+        padding: 8px;
+        border-bottom: 1px solid #003000;
+        cursor: var(--cursor-pointer);
+        position: relative;
+        transition: background-color 0.2s;
+        border-left: 3px solid transparent;
+      }
+
+      /* Unread indicator */
+      .email-list-item:not(.read):not(.locked)::before {
+        content: '●';
+        color: #00ffcc;
+        margin-right: 8px;
+        font-size: 0.8rem;
+        text-shadow: 0 0 5px #00ffcc;
+      }
+      .email-list-item.read {
+        color: #889955;
+      }
+      .email-list-item.read .email-subject {
+        color: #778844;
+      }
+      .email-list-item:hover:not(.locked) {
+        background: rgba(50, 255, 50, 0.1);
+      }
+      .email-list-item.active {
+        border-left-color: #C8FF00;
+        background: rgba(0, 255, 0, 0.05);
+      }
+      .email-list-item.locked {
+        color: #556b2f;
+        cursor: not-allowed;
+        background-color: #111;
+        font-style: italic;
+      }
+      .email-item-details { /* For sender/subject wrapper */
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+      .email-sender {
+        font-weight: bold;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+      .email-subject {
+        font-size: 0.9em;
+        color: #aaffaa;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+
+      .email-content {
+        flex: 1;
+        padding: 15px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+      }
+      .email-content-placeholder {
+        margin: auto;
+        text-align: center;
+        color: #556b2f;
+      }
+      .email-header {
+        border-bottom: 2px solid #005000;
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+        flex-shrink: 0;
+        color: #aaffaa;
+      }
+      .email-header span {
+        display: block;
+      }
+      .email-header .label {
+        color: #aaffaa;
+        font-weight: bold;
+        display: inline-block;
+        width: 70px;
+      }
+      .email-body {
+        white-space: pre-wrap;
+        flex-grow: 1;
+        line-height: 1.5;
+        color: #baff7f;
+        text-shadow: 0 0 2px rgba(0, 255, 0, 0.5);
       }
     </style>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>

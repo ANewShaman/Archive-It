@@ -1,3 +1,5 @@
+
+
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 // Fix: Correctly import exported types from types.ts
 import { WindowId, WindowState, LogEntry, PuzzleState, Position, BugInfo, PopupInfo, PuzzleValidationState } from './types';
@@ -16,6 +18,10 @@ import { NewsTicker } from './components/NewsTicker';
 import { NetFeed } from './components/NetFeed';
 import { Notepad } from './components/Notepad';
 import { MemeDecryptor } from './components/MemeDecryptor';
+import PlayWithMe from './components/PlayWithMe';
+import SnakeGame from './components/SnakeGame';
+import EmailInbox from './components/EmailInbox';
+import { SystemStatusLog } from './components/SystemStatusLog';
 
 // DELAY
 const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
@@ -77,7 +83,7 @@ const App: React.FC = () => {
         finaleActive: boolean;
         bugs: BugInfo[];
         missCount: number;
-        screenFlash: 'white' | 'black' | null;
+        screenFlash: 'white' | 'black' | 'red' | null;
         isPopupHellActive: boolean;
         popups: PopupInfo[];
         finaleGlitch: string;
@@ -89,6 +95,10 @@ const App: React.FC = () => {
         victoryCatFrame: string | null;
         isSubtleFlickering: boolean;
         memeDecryptorActive: boolean;
+        playWithMeTriggered: boolean;
+        showEmailInbox: boolean;
+        snakeFragments: number;
+        passwordRevealed: boolean;
     }>({
         showArrivalNotice: true,
         introSequenceFinished: false,
@@ -114,6 +124,10 @@ const App: React.FC = () => {
         victoryCatFrame: null,
         isSubtleFlickering: false,
         memeDecryptorActive: false,
+        playWithMeTriggered: false,
+        showEmailInbox: false,
+        snakeFragments: 0,
+        passwordRevealed: false,
     });
     
     const gameStateRef = useRef(gameState);
@@ -512,6 +526,16 @@ const App: React.FC = () => {
         await typeMessage("--- ARCHIVE COMPLETE ---", "system");
         await typeMessage(`Successfully archived: ${gameStateRef.current.selectedMeme}`, "system");
         await typeMessage("You 'won'. Congratulations? <(￣︶￣)>", "system");
+
+        await sleep(1000);
+        await typeMessage("Here's my treat! One last little game for me, please? 💖", 'ai');
+        await sleep(1500);
+    
+        if (isMounted.current) {
+            toggleWindow('snakeGame');
+            bringToFront('snakeGame');
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [typeMessage]);
 
     const loseFinale = useCallback(async () => {
@@ -547,8 +571,8 @@ const App: React.FC = () => {
             id: bugIdCounter.current++,
             x: Math.random() * (rect.width - 30),
             y: Math.random() * (rect.height - 30),
-            vx: (Math.random() - 0.5) * 10,
-            vy: (Math.random() - 0.5) * 10,
+            vx: (Math.random() - 0.5) * 23,
+            vy: (Math.random() - 0.5) * 23,
         }));
 
         switch (newMissCount) {
@@ -621,14 +645,14 @@ const App: React.FC = () => {
             id: bugIdCounter.current++,
             x: Math.random() * (rect.width - 30),
             y: Math.random() * (rect.height - 30),
-            vx: (Math.random() - 0.5) * 10,
-            vy: (Math.random() - 0.5) * 10,
+            vx: (Math.random() - 0.5) * 23,
+            vy: (Math.random() - 0.5) * 23,
         };
         
         setGameState(prev => ({ ...prev, finaleActive: true, isInputLocked: true, missCount: 0, bugs: [firstBug] }));
 
         finaleGlitchIntervalId.current = window.setInterval(triggerRandomFinaleGlitches, 2000);
-        finaleTimerId.current = window.setTimeout(loseFinale, 10000);
+        finaleTimerId.current = window.setTimeout(loseFinale, 13000);
         
         setTimeout(() => {
             if (isMounted.current && finaleActiveRef.current) {
@@ -791,6 +815,16 @@ const App: React.FC = () => {
                 promptText = "Core temperature critical! You MUST vent the plasma. Command is in the manual.";
                 break;
             case 6: 
+                if (!gameStateRef.current.playWithMeTriggered) {
+                    setGameState(prev => ({ ...prev, playWithMeTriggered: true, isInputLocked: true }));
+                    await typeMessage("...System resources are being... re-allocated. Stand by.");
+                    await sleep(1500);
+                    if (!isMounted.current) return;
+                    toggleWindow('playWithMe');
+                    bringToFront('playWithMe');
+                    return; // Stop here and wait for the game to finish
+                }
+                // This will be called by the game callbacks
                 await typeMessage("Backspace is fried. .  . Type it *perfectly*.");
                 startPopupSwarm();
                 break;
@@ -823,11 +857,39 @@ const App: React.FC = () => {
             await typeMessage(promptText);
         }
 
-        if (puzzleId !== 4 && puzzleId !== 9) {
+        // For puzzle 6, input lock is handled by the XO game callbacks
+        if (puzzleId !== 4 && puzzleId !== 9 && puzzleId !== 6) {
              if (isMounted.current) setGameState(prev => ({...prev, isInputLocked: false}));
         }
     }, [typeMessage, startLeetspeakFlicker, lockManual, startLogPurgeTimer, startDriftingTerminal, startPopupSwarm]);
     
+    // --- Tic-Tac-Toe Minigame Callbacks ---
+    const handleXOComplete = useCallback(async () => {
+        if (!isMounted.current) return;
+        closeWindow('playWithMe');
+        await typeMessage("...Fine, you win. Now where were we?");
+        await sleep(500);
+        // This is the original logic for puzzle 6
+        await typeMessage("Backspace is fried. .  . Type it *perfectly*.");
+        startPopupSwarm();
+        if (isMounted.current) {
+            setGameState(prev => ({ ...prev, isInputLocked: false }));
+        }
+    }, [typeMessage, startPopupSwarm]);
+
+    const handleXOLose = useCallback(async () => {
+        if (!isMounted.current) return;
+        closeWindow('playWithMe');
+        await typeMessage("Wow... that's just sad. Let's pretend this didn't happen.");
+        await sleep(500);
+        // Also continue with the puzzle
+        await typeMessage("Backspace is fried. .  . Type it *perfectly*.");
+        startPopupSwarm();
+        if (isMounted.current) {
+            setGameState(prev => ({ ...prev, isInputLocked: false }));
+        }
+    }, [typeMessage, startPopupSwarm]);
+
     const handleDecryptComplete = useCallback(async () => {
         if (!isMounted.current) return;
         setGameState(prev => ({ ...prev, memeDecryptorActive: false }));
@@ -946,7 +1008,7 @@ const App: React.FC = () => {
         }
         await sleep(1000);
         if (!isMounted.current) return;
-        await typeMessage("\nERROR: C̷̢̧̨̢̛̣͈̖̮̲͇̘̞̹̫̝̹̳͚̼͈͙̦͙̖͍͕̗̬̬̥̱̞̞͉͚͍̜̅̉͒̽̈̔̍̂̃̈́̄͊̄̐̆̿͑̎̒̃̌͂̄́́͒͗̐̀̇̌͂͗͂́̑̉̽͘̕̕͘̚͠ͅA̸̧̡̛̳̹̯̘̬̳̯̯͙̗̥̎͊̉̍̽̒͐̉̋̓̈́͑͐̂̀̇̏̈́̀̀̈́̍̒̿̃͊̕̕͘͘͠͝͝T̷̛̛͕̆̔͂͊̃̌́̽̋͛̌̈́̽͋̓́͊̎͋̇̂̎͗͋͊̈̂̔͗̂̉̾͗̅̔̑̕̕͘̕̚͠͝͝A̷̺͍͎͈͙̰̰̹̺͇̖̳͚̖̅͋͂̌̒͒̈̿̈͗̑̌͋̈́̈́̌͊̂̊͊͂͂͋̔̈̈́͑̾̌͋̊̄̏̊̀͂̅͑͛̋̚̕͘͝͝͝S̷͍͙̋̇̔͛̋͗̍̒̾̀̒̊̾͛́̓͛̀͆̓̈̀̃̂̅̽͐̀͛̐͘͝͠͝T̵̡̢̢̧̛͇̣͉̤̰̫̰̖̙̗̬͔̮͙̮̰͖̮̲̟̝͍͉̱͈̪͉̲̲̬͓̙̗͙͉̞̀̾̑̏̈́̌̂͋̃̏̓̔̎͗͐̌͆̈́͛́̇̀̔̌̾̋̈̌͒̓̄̓̿̋͑̈́̎̐̚̕̚̚͝͝͠͝R̵̡̧̧̢̡̧̫̤̜̩͎̜͚̬̮̟̠͉̹̘̺̺͇̎̉͑̍͗̈́͒̄̈̓̈́͗̇̂̌͋̒̓̆̿̑̊̌̚͜͜͝͝͠Ó̵̢̩̗͚̲̲̮̤͕̼̘̖̠̱͖̥̺̱̯̤̹̫̝̼͕͖̳̩̼̪̺͍͉͙̝̰̮̼̗͖̤̦̦̒͑̍͂͂̇̈́̚ͅP̷̢̛̛̬̓̀̆͗̂͑͐̽͆̆̀́͊̇͛̔͂͋̉̇͑͆̍̑̀̇̈͆̈́͑͗͘̚͝͠͝͝͝͝͝M͉̗H̸̨̧̢͓͙͙̲̲̲̦̦̬͓̻͚̥͕͕̣͉̻̘̠̜͓̟̦̩́̓̌̎̒̌̀́̀̂̿͛́̃͗́̆̉̏̑̾̑̒̓͗̿͋̊̉͑̀͊̀̍́̑͐̃͘͘̕͘͠Ĭ̶̬̩͙̗̹̖͍̩̖̥̲͖͖̞̫̄̃̄̅͛̄͋͌͋͊͒̍͒̐̓̒̾̃̉͗͌͌̽̽́̚̕̚͝͠͝͠S̨̝̞̠̻͈C̸̛̤͇͊̐̊̄̀̒̒̇̾͗͊͌͛̔́̎͘̕̚ C̷̨̡̢̨̛͎͎̮̳͙͙̜̗͕͍̫͙̜̩̹͔̦̤͓̹̭͎̞̩̙̺͓̠̫͙͎͚͓͕̽̈̑̾͌̔̂́͆̆̄̎͛̆̓̔̔͋̓̅̈́̆̃̅͊̋̀̈̈́̔̀̔́̓̂̈́̏͒͊̆͂̉̉̈͌͒͒̏̽͊̾͂̒͗̐̀͂͆͐̈̓͂̎͌̒̃̇̇̇́̈́̿̓̆̔͌̑̉́̌͛̀̀͌͗̓̅̌͘͘͘͘̚͘͜͝͝͝͝͠͠ͅͅ");
+        await typeMessage("\nERROR: C̷̢̧̨̢̛̣͈̖̮̲͇̘̞̹̫̝̹̳͚̼͈͙̦͙̖͍͕̗̬̬̥̱̞̞͉͚͍̜̅̉͒̽̈̔̍̂̃̈́̄͊̄̐̆̿͑̎̒̃̌͂̄́́͒͗̐̀̇̌͂͗͂́̑̉̽͘̕̕͘̚͠ͅA̸̧̡̛̳̹̯̘̬̳̯̯͙̗̥̎͊̉̍̽̒͐̉̋̓̈́͑͐̂̀̇̏̈́̀̀̈́̍̒̿̃͊̕̕͘͘͠͝͝T̷̛̛͕̆̔͂͊̃̌́̽̋͛̌̈́̽͋̓́͊̎͋̇̂̎͗͋͊̈̂̔͗̂̉̾͗̅̔̑̕̕͘̕̚͠͝͝A̷̺͍͎͈͙̰̰̹̺͇̖̳͚̖̅͋͂̌̒͒̈̿̈͗̑̌͋̈́̈́̌͊̂̊͊͂͂͋̔̈̈́͑̾̌͋̊̄̏̊̀͂̅͑͛̋̚̕͘͝͝͝S̷͍͙̋̇̔͛̋͗̍̒̾̀̒̊̾͛́̓͛̀͆̓̈̀̃̂̅̽͐̀͛̐͘͝͠͝T̵̡̢̢̧̛͇̣͉̤̰̫̰̖̙̗̬͔̮͙̮̰͖̮̲̟̝͍͉̱͈̪͉̲̲̬͓̙̗͙͉̞̀̾̑̏̈́̌̂͋̃̏̓̔̎͗͐̌͆̈́͛́̇̀̔̌̾̋̈̌͒̓̄̓̿̋͑̈́̎̐̚̕̚̚͝͝͠͝R̵̡̧̧̢̡̧̫̤̜̩͎̜͚̬̮̟̠͉̹̘̺̺͇̎̉͑̍͗̈́͒̄̈̓̈́͗̇̂̌͋̒̓̆̿̑̊̌̚͜͜͝͝͠Ó̵̢̩̗͚̲̲̮̤͕̼̘̖̠̱͖̥̺̱̯̤̹̫̝̼͕͖̳̩̼̪̺͍͉͙̝̰̮̼̗͖̤̦̦̒͑̍͂͂̇̈́̚ͅP̷̢̛̛̬̓̀̆͗̂͑͐̽͆̆̀́͊̇͛̔͂͋̉̇͑͆̍̑̀̇̈͆̈́͑͗͘̚͝͠͝͝͝͝͝M͉̗H̸̨̧̢͓͙͙̲̲̲̦̦̬͓̻͚̥͕͕̣͉̻̘̠̜͓̟̦̩́̓̌̎̒̌̀́̀̂̿͛́̃͗́̆̉̏̑̾̑̒̓͗̿͋̊̉͑̀͊̀̍́̑͐̃͘͘̕͘͠Ĭ̶̬̩͙̗̹̖͍̩̖̥̲͖͖̞̫̄̃̄̅͛̄͋͌͋͊͒̍͒̐̓̒̾̃̉͗͌͌̽̽́̚̕̚͝͠͝͠S̨̝̞̠̻͈C̸̛̤͇͊̐̊̄̀̒̒̇̾͗͊͌͛̔́̎͘̕̚ C̷̨̡̢̨̛͎̮̳͙͙̜̗͕͍̫͙̜̩̹͔̦͓̹̭͎̞̩̙̺͓̠̫͎͚͓͕̽̈̑̾͌̔̂́͆̆̄̎͛̆̓̔̔͋̓̅̈́̆̃̅͊̋̀̈̈́̔̀̔́̓̂̈́̏͒͊̆͂̉̉̈͌͒͒̏̽͊̾͂̒͗̐̀͂͆͐̈̓͂̎͌̒̃̇̇̇́̈́̿̓̆̔͌̑̉́̌͛̀̀͌͗̓̅̌͘͘͘͘̚͘͜͝͝͝͝͠͠ͅͅ");
         await typeMessage("M̷E̷M̷O̴R̶Y̵ ̴S̷E̸G̴M̸E̴N̴T̴ ̷[̴0̴x̵F̵F̴A̴A̴]̴ ̴U̴N̵R̶E̵A̵D̶A̵B̴L̴E̸.̴");
         await typeMessage("CORRUPTION DETECTED IN C̸͎͇̓̈́Ỏ̸̬̋R̶̫̦̒Ē̷̼ ARCHIVE ̴I̶N̸ ̶C̵O̷R̴E̵ ̸A̶R̴C̷H̴I̸V̶E̵.̵.̵ S̶P̸I̷R̷A̸L̷I̵N̴G̴.̵.̷.̵");
         await typeMessage("!̶@̵#̶%̸^̴&̷*̵(̴)̷_̶+̶");
@@ -1097,6 +1159,38 @@ const App: React.FC = () => {
         }
     }, [gameState.currentPuzzle, addToLog, handleNobleChoice, handleMemeYN, handleCursedChoice, handleProtocolCommand, typeMessage]);
     
+    const handleSnakeGameOver = useCallback(async (fragments: number, keys: number) => {
+        if (!isMounted.current) return;
+        closeWindow('snakeGame');
+        await typeMessage("...Snake.exe terminated.", 'system');
+        await typeMessage(`Meme fragments recovered: ${fragments}`, 'system');
+        await typeMessage(`Decryption keys secured: ${keys}`, 'system');
+
+        setGameState(prev => ({ ...prev, screenFlash: 'red' }));
+        setTimeout(() => {
+            if (isMounted.current) {
+                setGameState(prev => ({ ...prev, screenFlash: null }));
+            }
+        }, 300);
+
+        await sleep(100);
+        await typeMessage("[NOTICE] SYSTEM FILE UNREDACTED", 'system');
+        await typeMessage("Reason: UNKNOWN", 'system');
+        await typeMessage("Oh. You survived the meme hunt.", 'ai');
+        await typeMessage("Fine. Have your precious password. It was redacted for a reason.", 'ai');
+        
+        if (isMounted.current) {
+            setGameState(prev => ({ 
+                ...prev, 
+                passwordRevealed: true,
+                showEmailInbox: true, 
+                snakeFragments: fragments 
+            }));
+            toggleWindow('emailInbox');
+            bringToFront('emailInbox');
+        }
+    }, [typeMessage]);
+
     const moveBugs = useCallback(() => {
         setGameState(prev => {
             if (!prev.finaleActive) return prev;
@@ -1240,6 +1334,7 @@ const App: React.FC = () => {
             ></div>
             {gameState.screenFlash === 'white' && <div className="fixed inset-0 bg-white z-[99999]" />}
             {gameState.screenFlash === 'black' && <div className="fixed inset-0 bg-black z-[99999]" />}
+            {gameState.screenFlash === 'red' && <div className="crt-flash-red" />}
             <div id="power-outage-overlay" className={`fixed inset-0 bg-black z-[9998] transition-opacity duration-200 ${gameState.isPowerFlickering ? 'opacity-90' : 'opacity-0 pointer-events-none'}`}></div>
             
             <div id="monitor-bezel">
@@ -1261,6 +1356,8 @@ const App: React.FC = () => {
                             <DesktopIcon name="ascii_table.txt" onDoubleClick={() => toggleWindow('ascii')} />
                             <DesktopIcon name="system_status.log" onDoubleClick={() => toggleWindow('log')} />
                             <DesktopIcon name="CLASSIFIED.txt" onDoubleClick={() => toggleWindow('lore')} />
+                            <DesktopIcon name="EmailInbox.exe" onDoubleClick={() => toggleWindow('emailInbox')} />
+                            <DesktopIcon name="Snake.exe" onDoubleClick={() => toggleWindow('snakeGame')} />
                             <DesktopIcon name="system_log_corrupt.txt" onDoubleClick={() => {}} disabled={true} />
                             <DesktopIcon name="backup_failed_report.log" onDoubleClick={() => {}} disabled={true} />
                             <DesktopIcon name="unknown_artifact.zip" onDoubleClick={() => {}} disabled={true} />
@@ -1328,16 +1425,7 @@ const App: React.FC = () => {
                     )}
                     {windows.log.isOpen && (
                         <Window title="system_status.log" onClose={() => closeWindow('log')} windowState={windows.log} onFocus={() => bringToFront('log')} onMove={(newPos) => handleWindowMove('log', newPos)} isFrozen={gameState.finaleActive}>
-                            <div className="text-gray-400 text-sm whitespace-pre-wrap h-full overflow-y-auto">
-{`SYSBOOT OK
-KERNEL v6.66 LOADED
-NETWORK OFFLINE
-MEMORY CORRUPTION DETECTED: SEG 0xFA11
-POWER MODULE: STABLE
-LAST KERNEL PANIC CODE: 42
-USER SESSION: ADMIN (ACTIVE)
-`}
-                            </div>
+                            <SystemStatusLog passwordRevealed={gameState.passwordRevealed} />
                         </Window>
                     )}
                      {windows.lore.isOpen && (
@@ -1358,6 +1446,21 @@ USER SESSION: ADMIN (ACTIVE)
                     {windows.memeDecrypt.isOpen && (
                         <Window title="Decrypt_Meme.exe" onClose={() => closeWindow('memeDecrypt')} windowState={windows.memeDecrypt} onFocus={() => bringToFront('memeDecrypt')} onMove={(newPos) => handleWindowMove('memeDecrypt', newPos)} isFrozen={gameState.finaleActive}>
                             <MemeDecryptor onComplete={handleDecryptComplete} onFailure={handleDecryptFailure} />
+                        </Window>
+                    )}
+                    {windows.playWithMe.isOpen && (
+                        <Window title="PlayWithMe.exe" onClose={() => { closeWindow('playWithMe'); handleXOLose(); }} windowState={windows.playWithMe} onFocus={() => bringToFront('playWithMe')} onMove={(newPos) => handleWindowMove('playWithMe', newPos)} isFrozen={gameState.finaleActive}>
+                            <PlayWithMe onComplete={handleXOComplete} onLose={handleXOLose} />
+                        </Window>
+                    )}
+                    {windows.snakeGame.isOpen && (
+                        <Window title="Snake.exe" onClose={() => closeWindow('snakeGame')} windowState={windows.snakeGame} onFocus={() => bringToFront('snakeGame')} onMove={(newPos) => handleWindowMove('snakeGame', newPos)} isFrozen={gameState.finaleActive}>
+                            <SnakeGame onGameOver={handleSnakeGameOver} />
+                        </Window>
+                    )}
+                    {windows.emailInbox.isOpen && (
+                        <Window title="EmailInbox.exe" onClose={() => closeWindow('emailInbox')} windowState={windows.emailInbox} onFocus={() => bringToFront('emailInbox')} onMove={(newPos) => handleWindowMove('emailInbox', newPos)} isFrozen={gameState.finaleActive}>
+                            <EmailInbox fragments={gameState.snakeFragments} />
                         </Window>
                     )}
                 </>

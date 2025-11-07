@@ -66,6 +66,18 @@ export const INITIAL_WINDOWS_STATE: Record<WindowId, WindowState> = {
         position: { x: 400, y: 120 },
         size: { width: 350, height: 450 },
         zIndex: 11,
+    },
+    snakeGame: {
+        isOpen: false,
+        position: { x: 250, y: 100 },
+        size: { width: 400, height: 480 },
+        zIndex: 12,
+    },
+    emailInbox: {
+        isOpen: false,
+        position: { x: 300, y: 150 },
+        size: { width: 700, height: 500 },
+        zIndex: 13,
     }
 };
 
